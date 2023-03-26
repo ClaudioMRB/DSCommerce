@@ -1,8 +1,10 @@
 Banco de dados H2, entidade User
 
+(application.properties)
 spring.profiles.active=test
 spring.jpa.open-in-view=false
 
+(application-test.properties)
 # Dados de conexão com o banco H2
 spring.datasource.url=jdbc:h2:mem:testdb
 spring.datasource.username=sa
