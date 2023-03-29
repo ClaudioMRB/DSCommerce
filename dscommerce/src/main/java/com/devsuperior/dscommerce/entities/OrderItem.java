@@ -7,18 +7,16 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_order_item")
 public class OrderItem {
-	
-	
 
 	@EmbeddedId
 	private OrderItemPK id = new OrderItemPK();
 	private Integer quantity;
 	private Double price;
-	
+
 	public OrderItem() {
-		
+
 	}
-	
+
 	public OrderItem(Order order, Product product, Integer quantity, Double price) {
 		id.setOrder(order);
 		id.setProduct(product);
@@ -29,20 +27,20 @@ public class OrderItem {
 	public Order getOrder() {
 		return id.getOrder();
 	}
-	
+
 	public void setOrder(Order order) {
-		id.setOrder(order);;
+		id.setOrder(order);
+		;
 	}
-	
-	
+
 	public Product getProduct() {
 		return id.getProduct();
 	}
-	
+
 	public void setProduct(Product product) {
 		id.setProduct(product);
 	}
-	
+
 	public Integer getQuantity() {
 		return quantity;
 	}
@@ -58,11 +56,5 @@ public class OrderItem {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	
-	
-
-	
-
-	
 
 }
