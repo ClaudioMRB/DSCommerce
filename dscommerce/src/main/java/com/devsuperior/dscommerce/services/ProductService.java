@@ -3,6 +3,8 @@ package com.devsuperior.dscommerce.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,28 +12,49 @@ import com.devsuperior.dscommerce.dto.ProductDTO;
 import com.devsuperior.dscommerce.entities.Product;
 import com.devsuperior.dscommerce.repositories.ProductRepository;
 
-@Service 
-public class ProductService { 
-	//DEPENDE DO REPOSITORY
-	//AQUI ONDE É IMPLEMENTADO AS BUSCAS NO BANCO DE DADOS
-	//O SERVICE RETORNA UM DTO PARA OS CONTROLADORES
-	
+@Service
+public class ProductService {
+	// DEPENDE DO REPOSITORY
+	// AQUI ONDE É IMPLEMENTADO AS BUSCAS NO BANCO DE DADOS
+	// O SERVICE RETORNA UM DTO PARA OS CONTROLADORES
+
 	@Autowired
 	private ProductRepository repository;
-	
+
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
-		
-		/*Buscou no banco de dados, o produto que tem o id e retornou para a 
-		variável result*/
-		Optional<Product> result = repository.findById(id); 
-		/*variável product recebe o result, pegou o produto */
+
+		/*
+		 * Buscou no banco de dados, o produto que tem o id e retornou para a variável
+		 * result
+		 */
+		Optional<Product> result = repository.findById(id);
+		/* variável product recebe o result, pegou o produto */
 		Product product = result.get();
-		/*converter o product para DTO */
+		/* converter o product para DTO */
 		ProductDTO dto = new ProductDTO(product);
 		return dto;
 	}
+
+	@Transactional(readOnly = true)
+	public Page<ProductDTO> findAll(Pageable pageable) {
+
+		Page<Product> result = repository.findAll(pageable);
+		return result.map(x -> new ProductDTO(x));
+	}
 	
+	@Transactional
+	public ProductDTO insert(ProductDTO dto) {
+
+		Product entity = new Product();
+		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
+		entity.setPrice(dto.getPrice());
+		entity.setImgUrl(dto.getImgUrl());
+		
+		entity = repository.save(entity);
+		
+		return new ProductDTO(entity);
 	
-	
+	}
 }
